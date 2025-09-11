@@ -1,8 +1,38 @@
 import streamlit as st
 import agents  # Import the agents module
 
-# Title
-st.title("SmartSacco Loan Eligibility")
+# Custom styling and branding
+st.set_page_config(page_title="SmartSacco Loan Portal", layout="wide", page_icon="💰")
+
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background-image: url('C:/Users/mikik/OneDrive/Documents/Desktop/Smartsacco1/images/sacco-bg.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+    .stHeader {
+        background-color: rgba(44, 62, 80, 0.8); /* Semi-transparent header */
+        color: white;
+        padding: 10px;
+        text-align: center;
+    }
+    .stContent {
+        background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent content box */
+        padding: 20px;
+        border-radius: 10px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# Title with Sacco branding
+st.markdown("<h1 class='stHeader'>SmartSacco Loan Eligibility Portal</h1>", unsafe_allow_html=True)
+st.write("Welcome to SmartSacco, your trusted cooperative for secure loans!")
+
 
 # Sidebar for login
 st.sidebar.header("Login")
@@ -20,7 +50,7 @@ if "logged_in" not in st.session_state:
 
 if st.session_state.logged_in:
     st.header("Loan Request Form")
-    member_id = st.number_input("Member id")
+    member_id = st.number_input("Member ID", min_value=1, step=1)
     amount = st.number_input("Requested Loan Amount", min_value=0.0)
 
     if st.button("Predict Eligibility"):
@@ -30,12 +60,15 @@ if st.session_state.logged_in:
             if "error" in result:
                 st.error(result["error"])
             else:
+                st.markdown("### Eligibility Analysis")
+                st.write(result.get("narrative", "No detailed analysis provided."))
+                st.markdown("### Summary")
                 st.success(f"Eligible: {result.get('eligible', 'Unknown')}")
+                st.write(f"**Credit Score**: {result.get('credit_score', 'N/A')}")
                 st.write(f"Reasons: {result.get('reasons', 'N/A')}")
                 st.write(f"Current Balance: ${result.get('current_balance', 0)}")
                 st.write(f"Due Date: {result.get('due_date', 'N/A')}")
-                st.write(f"Total Investments: {result.get('amount_invested', 0)}")
-                st.write(f"Credit score: {result.get('credit_score', 'N/A')}")
+                st.write(f"Total Investments: ${result.get('total_invested', 0)}")
                 if "notification" in result:
                     st.info(f"Notification Sent: {result['notification']}")
         else:
