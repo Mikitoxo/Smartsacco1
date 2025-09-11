@@ -46,6 +46,7 @@ def get_db_connection():
     )
 
 # Authentication function for admin_logins
+#for now logins will be done using dummy credentials!!
 def authenticate_user(email, password):
     query = "SELECT password FROM admin_logins WHERE email = %s"
     try:

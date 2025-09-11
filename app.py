@@ -39,7 +39,7 @@ st.sidebar.header("Login")
 username = st.sidebar.text_input("Email")
 password = st.sidebar.text_input("Password", type="password")
 if st.sidebar.button("Login"):
-    if username == "admin" and password == "password":  # Dummy credentials
+    if username == "admin@smartsacco.com" and password == "password456":  # Dummy credentials
         st.session_state.logged_in = True
     else:
         st.sidebar.error("Invalid credentials")
