@@ -22,3 +22,4 @@
    - Credit score.
    - Due date for the current loan repayment (if applicable).
    - If eligible, the member can receive a loan of up to **3× their investment balance**.
+
