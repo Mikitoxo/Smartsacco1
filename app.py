@@ -1,9 +1,5 @@
 import streamlit as st
-import agents  # Import the agents module
-
-db_host = st.secrets["DB_HOST"]
-db_user = st.secrets["DB_USER"]
-db_password = st.secrets["DB_PASSWORD"]
+import agents   # Import the agents module
 
 # Custom styling and branding
 st.set_page_config(page_title="SmartSacco Loan Portal", layout="wide", page_icon="💰")
