@@ -7,8 +7,6 @@ import mysql.connector
 from mysql.connector.cursor import MySQLCursorDict
 from dotenv import load_dotenv
 import os
-import json
-import re
 import logging
 
 # Set up logging
@@ -41,12 +39,10 @@ def get_db_connection():
         password=os.getenv('TIDB_PASSWORD'),
         database=os.getenv('TIDB_DB', 'test'),
         ssl_ca="C:/Users/mikik/Downloads/isrgrootx1.pem",
-        
         use_pure=True  # Ensure pure Python implementation
     )
 
 # Authentication function for admin_logins
-#for now logins will be done using dummy credentials!!
 def authenticate_user(email, password):
     query = "SELECT password FROM admin_logins WHERE email = %s"
     try:
@@ -126,33 +122,10 @@ prompt = PromptTemplate(
     - If the `due_date` is within 7 days from 2025-09-11 (i.e., on or before 2025-09-18), include a reminder to pay in the response.
 
     **Response Format**:
-    Provide a detailed, user-friendly explanation of the member's eligibility, including their credit score, total investments, and current balance (amount_due). Always mention the credit score explicitly. If eligible, confirm the loan amount is within limits. If ineligible, explain why (e.g., outstanding balance, insufficient investments, low credit score). Include any payment reminders if applicable.
-
-    At the end of your response, include a JSON object with the following fields:
-    ```json
-    {{
-        "eligible": "yes" or "no",
-        "reasons": "brief explanation",
-        "current_balance": amount_due,
-        "due_date": "date or 'none'",
-        "total_invested": total_invested,
-        "credit_score": credit_score
-    }}
-    ```
+    Provide a detailed, user-friendly explanation of the member's eligibility. Include the member's name, credit score, total investments, and current balance (amount_due). If eligible, confirm the loan amount is within limits. If ineligible, explain why (e.g., outstanding balance, insufficient investments, low credit score). Include any payment reminders if applicable. Feel free to format the response as you see fit, as long as it is correct, clear, and includes all required details. No specific structure is required.
 
     Example Response:
-    The member has a credit score of 250, a total investment of $5000, and an outstanding balance of $0. The requested loan amount of $10000 is within 3 times the total investments ($15000). Since the amount due is $0 and the credit score is above 200, the member is eligible for the loan.
-
-    ```json
-    {{
-        "eligible": "yes",
-        "reasons": "No outstanding balance, sufficient investments, and good credit score",
-        "current_balance": 0,
-        "due_date": "none",
-        "total_invested": 5000,
-        "credit_score": 250
-    }}
-    ```
+    For member John Doe, with a credit score of 250, total investments of $5000, and an outstanding balance of $0, the loan request of $10000 is well within 3 times the investments ($15000). Since there’s no outstanding balance and the credit score exceeds 200, John Doe is eligible for the loan.
     """
 )
 analysis_chain = prompt | llm
@@ -182,23 +155,19 @@ def process_loan_request(member_id, amount):
     
     analysis = analysis_chain.invoke({"data": data, "amount": amount})
     try:
-        # Extract JSON block from response
-        json_str = re.search(r'```json\n(\{.*?\})\n```', analysis, re.DOTALL)
-        result = json.loads(json_str.group(1)) if json_str else {"error": "No valid JSON found"}
+        # Store the entire narrative response
+        result = {"narrative": analysis.strip()}
         member_id = data[0].get('member_id') if data else None
         
-        if result.get("eligible") == "yes" and "remind" in result.get("reasons", "").lower() and member_id:
-            notification = process_notification(member_id, f"Pay reminder: Due by {result.get('due_date', 'soon')}")
+        if "remind" in analysis.lower() and member_id:
+            notification = process_notification(member_id, f"Pay reminder: Due by {data[0].get('due_date', 'soon')}")
             result["notification"] = notification.get("notification", notification.get("error"))
         
-        # Include the narrative response
-        narrative = analysis.split("```json")[0].strip() if "```json" in analysis else analysis
-        result["narrative"] = narrative
         logging.info(f"Processed result for member_id {member_id}: {result}")
         return result
-    except (json.JSONDecodeError, AttributeError) as e:
-        logging.error(f"Failed to parse LLM output: {e}, raw response: {analysis}")
-        return {"error": "Failed to parse LLM output or invalid data"}
+    except Exception as e:
+        logging.error(f"Error processing response: {e}, raw response: {analysis}")
+        return {"error": "Error processing response"}
 
 # Wrapper function for compatibility with app.py
 def get_loan_prediction(member_id, amount):

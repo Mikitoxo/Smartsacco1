@@ -1,7 +1,7 @@
 import streamlit as st
 import agents   # Import the agents module
 
-# Custom styling and branding
+# Custom styling and branding with uniform font
 st.set_page_config(page_title="SmartSacco Loan Portal", layout="wide", page_icon="💰")
 
 st.markdown(
@@ -14,15 +14,20 @@ st.markdown(
         background-attachment: fixed;
     }
     .stHeader {
-        background-color: rgba(44, 62, 80, 0.8); /* Semi-transparent header */
+        background-color: rgba(44, 62, 80, 0.8);
         color: white;
         padding: 10px;
         text-align: center;
+        font-family: Arial, sans-serif;
+        font-size: 24px;
     }
     .stContent {
-        background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent content box */
+        background-color: rgba(255, 255, 255, 0.9);
         padding: 20px;
         border-radius: 10px;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
     }
     </style>
     """,
@@ -32,7 +37,6 @@ st.markdown(
 # Title with Sacco branding
 st.markdown("<h1 class='stHeader'>SmartSacco Loan Eligibility Portal</h1>", unsafe_allow_html=True)
 st.write("Welcome to SmartSacco, your trusted cooperative for secure loans!")
-
 
 # Sidebar for login
 st.sidebar.header("Login")
@@ -49,6 +53,7 @@ if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
 if st.session_state.logged_in:
+    st.markdown("<div class='stContent'>", unsafe_allow_html=True)
     st.header("Loan Request Form")
     member_id = st.number_input("Member ID", min_value=1, step=1)
     amount = st.number_input("Requested Loan Amount", min_value=0.0)
@@ -61,17 +66,15 @@ if st.session_state.logged_in:
                 st.error(result["error"])
             else:
                 st.markdown("### Eligibility Analysis")
-                st.write(result.get("narrative", "No detailed analysis provided."))
-                st.markdown("### Summary")
-                st.success(f"Eligible: {result.get('eligible', 'Unknown')}")
-                st.write(f"**Credit Score**: {result.get('credit_score', 'N/A')}")
-                st.write(f"Reasons: {result.get('reasons', 'N/A')}")
-                st.write(f"Current Balance: ${result.get('current_balance', 0)}")
-                st.write(f"Due Date: {result.get('due_date', 'N/A')}")
-                st.write(f"Total Investments: ${result.get('total_invested', 0)}")
+                st.markdown(f"<div style='font-family: Arial, sans-serif; font-size: 16px;'>{result.get('narrative', 'No analysis available.')}</div>", unsafe_allow_html=True)
                 if "notification" in result:
                     st.info(f"Notification Sent: {result['notification']}")
         else:
             st.warning("Please fill in all fields")
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    # Additional Sacco-specific section
+    st.subheader("Sacco Updates")
+    st.write("Stay tuned for new investment opportunities and repayment plans!")
 else:
     st.warning("Please log in to continue")
