@@ -42,7 +42,8 @@ def get_db_connection():
         use_pure=True  # Ensure pure Python implementation
     )
 
-# Authentication function for admin_logins
+
+# Authentication function for admin_logins, although currently, dummy variables are used to login
 def authenticate_user(email, password):
     query = "SELECT password FROM admin_logins WHERE email = %s"
     try:
@@ -130,21 +131,6 @@ prompt = PromptTemplate(
 )
 analysis_chain = prompt | llm
 
-# Notification Function
-def process_notification(member_id, message):
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor(cursor_class=MySQLCursorDict)
-        cursor.execute(
-            "INSERT INTO notifications (member_id, message, sent_date) VALUES (%s, %s, %s)",
-            (member_id, message, datetime.datetime.now())
-        )
-        conn.commit()
-        conn.close()
-        return {"notification": message, "member_id": member_id}
-    except Exception as e:
-        logging.error(f"Error processing notification for member_id {member_id}: {e}")
-        return {"error": f"Failed to send notification: {e}"}
 
 # Orchestrate
 def process_loan_request(member_id, amount):
@@ -159,9 +145,6 @@ def process_loan_request(member_id, amount):
         result = {"narrative": analysis.strip()}
         member_id = data[0].get('member_id') if data else None
         
-        if "remind" in analysis.lower() and member_id:
-            notification = process_notification(member_id, f"Pay reminder: Due by {data[0].get('due_date', 'soon')}")
-            result["notification"] = notification.get("notification", notification.get("error"))
         
         logging.info(f"Processed result for member_id {member_id}: {result}")
         return result

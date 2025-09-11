@@ -35,7 +35,7 @@ st.markdown(
 )
 
 # Title with Sacco branding
-st.markdown("<h1 class='stHeader'>SmartSacco Loan Eligibility Portal</h1>", unsafe_allow_html=True)
+st.markdown("<h1 class='stHeader'>💵SmartSacco Loan Eligibility Portal💵</h1>", unsafe_allow_html=True)
 st.write("Welcome to SmartSacco, your trusted cooperative for secure loans!")
 
 # Sidebar for login
