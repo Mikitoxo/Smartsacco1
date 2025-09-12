@@ -10,6 +10,19 @@
 - A TiDB Cloud Starter cluster: Create a free cluster here: [tidbcloud.com](https://tidbcloud.com/)
 - Ollama, you can install it from [Ollama](https://ollama.com/download)
 
+#### first, start the enbedding service with Ollama
+- pull the embedding model
+  ```
+     ollama pull mistral:7b
+  ```
+- Test the embedding service to make sure it is running:
+ ```
+  curl http://localhost:11434/api/embed -d '{
+  "model": "mistral:7b",
+  "input": "Llamas are members of the camelid family"
+}'
+```
+
 1. Clone the repository:
    ```bash
    git clone https://github.com/Mikitoxo/Smartsacco1.git
