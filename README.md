@@ -7,7 +7,8 @@
 ## How to run SmartSacco
 #### Prerequisites
 - Python 3.10+
-- A TiDB Cloud Starter cluster: Create a free cluster here: [tidbcloud.com](https://tidbcloud.com/) 
+- A TiDB Cloud Starter cluster: Create a free cluster here: [tidbcloud.com](https://tidbcloud.com/)
+- Ollama, you can install it from [Ollama](https://ollama.com/download)
 
 1. Clone the repository:
    ```bash
@@ -42,7 +43,7 @@
 ## How it works
 - Input: User logs in and submits member_id of the Sacco member and amount they want to borrow.
 - Search: Queries TiDB Serverless for member data.
-- LLM Analysis: Mistral 7B evaluates eligibility.
+- LLM Analysis: Ollama's Mistral 7B evaluates eligibility.
 - Output: Based on the member data, the AI agent predicts whether or not the member is eligible for the loan, it also states    why they are/are not eligible.
    
 
