@@ -53,7 +53,8 @@
 - LLM Analysis: Ollama's Mistral 7B evaluates eligibility.
 - Output: Based on the member data, the AI agent predicts whether or not the member is eligible for the loan, it also states    why they are/are not eligible.
   <img width="1804" height="749" alt="image" src="https://github.com/user-attachments/assets/09e29e00-895f-4b27-a66c-754a1f73a102" />
-  <img width="1803" height="835" alt="image" src="https://github.com/user-attachments/assets/a42d3ba0-05e8-4adc-a62a-de81691f5bea" />
+  <img width="1906" height="812" alt="image" src="https://github.com/user-attachments/assets/985a0ce0-d1b4-4d05-9dc9-e2fbd98d7838" />
+
 
  
 
