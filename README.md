@@ -1,25 +1,48 @@
 # SmartSacco AI Agent
+<img width="1919" height="1019" alt="image" src="https://github.com/user-attachments/assets/6ab79ba9-7aa4-4840-a7a2-6b152ac82d3b" />
 
 ## What
-- An AI agent/LLM that predicts whether a member of a given SACCO is likely to default on a loan based on previous loan history.
-- Automates notifications to borrowers to remind them to repay their loans.
+- An AI agent/LLM that predicts whether a member of a given SACCO is likely to default on a loan based on previous loan history, credit score, and investment amounts.
 
-## Why
-- Reduce loan defaulters in SACCOs.
-- Reduce management workload by automating notifications.
-- Streamline and expedite the loan approval process.
+## How to run SmartSacco
+#### Prerequisites
+- Python 3.10+
+- A TiDB Cloud Starter cluster: Create a free cluster here: [tidbcloud.com✨](tidbcloud.com) 
 
-## Who
-- Designed for SACCOs (and potentially financial institutions like banks in the future) to assess the loan eligibility of existing members.
-- Eliminates the need for manual file reviews, saving time and effort—a simple prompt to SmartSacco quickly determines member eligibility.
-- Frees up financial managers to focus on the growth of the SACCO.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Mikitoxo/Smartsacco1.git
+   cd Smartsacco1
+   ```
+2. Set up a virtual environment and install dependencies
+```bash
+   python -m venv .venv
+   .\.venv\Scripts\Activate.ps1  # Use this on Windows
+   pip install -r requirements.txt
+```
+3. Configure environment variables (create .env from .env.example with your TiDB credentials):
+   If you are using TiDB Cloud, you can find the connection parameters in the [TiDB Cloud console](https://tidbcloud.com/).
+   ```bash
+      cat > .env <<EOF
+   TIDB_HOST=gateway01.us-west-2.prod.aws.tidbcloud.com  # Replace with your host
+   TIDB_PORT=4000
+   TIDB_USERNAME=your_username  # e.g., 4CPrcEoPyoTLuQq.root
+   TIDB_PASSWORD=your_password  # e.g., 5b8wsjXDrciBHV4i
+   TIDB_PASSWORD=5b8wsjXDrciBHV4i
+   TIDB_DATABASE=test
+   EOF
+   ```
+4. Run the Streamlit app:
+   ```bash
+   streamlit run app.py
+   ```
+5. Open [(http://localhost:8501)](http://localhost:8501) in your browser.
 
-## How It Works (Front End)
-1. A financial officer/admin or SACCO member logs into SmartSacco.
-2. The officer/member fills out a form with the member's ID number and requested loan amount.
-3. The model returns a **Yes** or **No** decision based on SACCO data, including:
-   - Current loan balance (if any).
-   - Credit score.
-   - Due date for the current loan repayment (if applicable).
-   - If eligible, the member can receive a loan of up to **3× their investment balance**.
+
+## How it works
+- Input: User logs in and submits member_id of the Sacco member and amount they want to borrow.
+- Search: Queries TiDB Serverless for member data.
+- LLM Analysis: Mistral 7B evaluates eligibility.
+- Output: Based on the member data, the AI agent predicts whether or not the member is eligible for the loan, it also states    why they are/are not eligible.
+   
 
