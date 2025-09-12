@@ -40,7 +40,7 @@
    TIDB_DATABASE=test
    EOF
    ```
-4. Run the Streamlit app:
+4. Run the Streamlit app: ⚠️This might take some time depending on your computing capacity, please be patient.
    ```bash
    streamlit run app.py
    ```
