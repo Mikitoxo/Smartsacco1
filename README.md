@@ -7,7 +7,7 @@
 ## How to run SmartSacco
 #### Prerequisites
 - Python 3.10+
-- A TiDB Cloud Starter cluster: Create a free cluster here: [tidbcloud.com](tidbcloud.com) 
+- A TiDB Cloud Starter cluster: Create a free cluster here: [tidbcloud.com](https://tidbcloud.com/) 
 
 1. Clone the repository:
    ```bash
