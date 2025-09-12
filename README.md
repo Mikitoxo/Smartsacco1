@@ -28,7 +28,7 @@
    .\.venv\Scripts\Activate.ps1  # Use this on Windows
    pip install -r requirements.txt
 ```
-3. Configure environment variables (create .env from .env.example with your TiDB credentials):
+3. Configure environment variables to connect to TiDB (create .env from .env.example with your TiDB credentials):
    If you are using TiDB Cloud, you can find the connection parameters in the [TiDB Cloud console](https://tidbcloud.com/).
    ```bash
       cat > .env <<EOF
