@@ -48,9 +48,9 @@
    - email: admin@smartsacco.com
    - password: password456
        - if you copy and paste the login credentials, be mindful to not have a space after as the login will be impossible.
-7. enter a member Id value between 1-750
-8. enter the requested loan amount
-9. press the 'predict eligibility' button to recieve an output from the agent. (⚠️This might take some time depending on your computing capacity, please be patient.)
+7. Enter a member Id value between 1-750
+8. Enter the requested loan amount
+9. Press the 'predict eligibility' button to recieve an output from the agent. (⚠️This might take some time depending on your computing capacity, please be patient.)
 
 
 ## How it works
